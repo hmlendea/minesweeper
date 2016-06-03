@@ -1,14 +1,15 @@
-﻿using Minesweeper.Models;
+﻿using System;
+using Minesweeper.Models;
 
 namespace Minesweeper.Game
 {
     public class GameEngine
     {
         /// <summary>
-        /// Gets the game table.
+        /// Gets or sets the tiles.
         /// </summary>
-        /// <value>The game table.</value>
-        public GameTable GameTable { get; private set; }
+        /// <value>The tiles.</value>
+        public Tile[,] Tiles { get; set; }
 
         /// <summary>
         /// Gets the game time.
@@ -69,7 +70,7 @@ namespace Minesweeper.Game
                 if (!Alive)
                     return false;
 
-                foreach (Tile tile in GameTable.Tiles)
+                foreach (Tile tile in Tiles)
                     if ((!tile.Flagged && !tile.Cleared) || (tile.Flagged && !tile.Mined))
                         return false;
 
@@ -89,6 +90,8 @@ namespace Minesweeper.Game
             MinesCount = mines;
             FlagsLimit = mines;
 
+            GenerateTable();
+
             GLib.Timeout.Add(1000, new GLib.TimeoutHandler(TimerTick));
         }
 
@@ -100,7 +103,7 @@ namespace Minesweeper.Game
             Alive = true;
             FlagsPlaced = 0;
 
-            GameTable = new GameTable(TableSize, MinesCount);
+            GenerateTable();
 
             GameTime = 0;
             IsRunning = true;
@@ -116,26 +119,26 @@ namespace Minesweeper.Game
             int[] dx = { -1, -1, -1, 0, 1, 1, 1, 0 };
             int[] dy = { -1, 0, 1, 1, 1, 0, -1, -1 };
 
-            if (GameTable.Tiles[x, y].Cleared || GameTable.Tiles[x, y].Flagged)
+            if (Tiles[x, y].Cleared || Tiles[x, y].Flagged)
                 return;
 
-            if (GameTable.Tiles[x, y].Mined)
+            if (Tiles[x, y].Mined)
             {
                 Alive = false;
                 IsRunning = false;
                 return;
             }
 
-            GameTable.Tiles[x, y].Cleared = true;
+            Tiles[x, y].Cleared = true;
 
-            if (GameTable.Tiles[x, y].DangerLevel == 0 && !GameTable.Tiles[x, y].Mined)
+            if (Tiles[x, y].DangerLevel == 0 && !Tiles[x, y].Mined)
                 for (int dir = 0; dir < 8; dir++)
                 {
                     int x2 = dx[dir] + x;
                     int y2 = dy[dir] + y;
 
                     if (x2 >= 0 && x2 < TableSize && y2 >= 0 && y2 < TableSize)
-                    if (!GameTable.Tiles[x2, y2].Cleared && !GameTable.Tiles[x2, y2].Flagged)
+                    if (!Tiles[x2, y2].Cleared && !Tiles[x2, y2].Flagged)
                         ClearTile(x2, y2);
                 }
         }
@@ -147,22 +150,22 @@ namespace Minesweeper.Game
         /// <param name="y">The Y coordinate.</param>
         public void FlagTile(int x, int y)
         {
-            if (GameTable.Tiles[x, y].Cleared)
+            if (Tiles[x, y].Cleared)
                 return;
 
             // Flag it
-            if (!GameTable.Tiles[x, y].Flagged)
+            if (!Tiles[x, y].Flagged)
             {
                 if (FlagsPlaced < FlagsLimit)
                 {
-                    GameTable.Tiles[x, y].Flagged = true;
+                    Tiles[x, y].Flagged = true;
                     FlagsPlaced += 1;
                 }
             }
             // Unflag it
             else
             {
-                GameTable.Tiles[x, y].Flagged = false;
+                Tiles[x, y].Flagged = false;
                 FlagsPlaced -= 1;
             }
         }
@@ -173,6 +176,64 @@ namespace Minesweeper.Game
                 GameTime += 1;
             
             return true;
+        }
+
+        public void Regenerate()
+        {
+            GenerateTable();
+            InitializeTiles();
+            GenerateMines();
+            GenerateDangerLevels(); 
+        }
+
+        void GenerateTable()
+        {
+            InitializeTiles();
+            GenerateMines();
+            GenerateDangerLevels();
+        }
+
+        void InitializeTiles()
+        {
+            Tiles = new Tile[TableSize, TableSize];
+
+            for (int i = 0; i < TableSize; i++)
+                for (int j = 0; j < TableSize; j++)
+                {
+                    Tiles[i, j] = new Tile();
+                    Tiles[i, j].X = i;
+                    Tiles[i, j].Y = j;
+                } 
+        }
+
+        void GenerateMines()
+        {
+            Random rnd = new Random();
+
+            for (int mine = 0; mine < MinesCount; mine++)
+            {
+                int x = rnd.Next(0, TableSize);
+                int y = rnd.Next(0, TableSize);
+
+                if (!Tiles[x, y].Mined)
+                    Tiles[x, y].Mined = true;
+                else
+                    mine -= 1;
+            }
+        }
+
+        void GenerateDangerLevels()
+        {
+            int[] dx = { -1, -1, -1, 0, 1, 1, 1, 0 };
+            int[] dy = { -1, 0, 1, 1, 1, 0, -1, -1 };
+
+            for (int x = 0; x < TableSize; x++)
+                for (int y = 0; y < TableSize; y++)
+                    if (Tiles[x, y].Mined)
+                        for (int dir = 0; dir < 8; dir++)
+                            if (dx[dir] + x >= 0 && dx[dir] + x < TableSize && dy[dir] + y >= 0 && dy[dir] + y < TableSize)
+                            if (!Tiles[x + dx[dir], y + dy[dir]].Mined)
+                                Tiles[x + dx[dir], y + dy[dir]].DangerLevel += 1;
         }
     }
 }

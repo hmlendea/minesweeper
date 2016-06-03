@@ -109,20 +109,20 @@ namespace Minesweeper.Views
                         tileSpacing / 2 + y * tileSize + y * tileSpacing,
                         tileSize, tileSize);
 
-                    if (gameEngine.GameTable.Tiles[x, y].Cleared)
+                    if (gameEngine.Tiles[x, y].Cleared)
                         gfx.FillRectangle(brClearedTile, recTable);
                     else
                         gfx.FillRectangle(brActiveTile, recTable);
 
-                    if (gameEngine.GameTable.Tiles[x, y].Cleared && gameEngine.GameTable.Tiles[x, y].DangerLevel > 0)
+                    if (gameEngine.Tiles[x, y].Cleared && gameEngine.Tiles[x, y].DangerLevel > 0)
                         gfx.DrawString(
-                            gameEngine.GameTable.Tiles[x, y].DangerLevel.ToString(), font,
-                            dangerBrushes[gameEngine.GameTable.Tiles[x, y].DangerLevel], recTable, strFormat);
+                            gameEngine.Tiles[x, y].DangerLevel.ToString(), font,
+                            dangerBrushes[gameEngine.Tiles[x, y].DangerLevel], recTable, strFormat);
 
-                    if (gameEngine.GameTable.Tiles[x, y].Mined && !gameEngine.Alive)
+                    if (gameEngine.Tiles[x, y].Mined && !gameEngine.Alive)
                         gfx.DrawImage(bmpMine, recTable);
 
-                    if (gameEngine.GameTable.Tiles[x, y].Flagged)
+                    if (gameEngine.Tiles[x, y].Flagged)
                         gfx.DrawImage(bmpFlag, recTable);
                 }
 
