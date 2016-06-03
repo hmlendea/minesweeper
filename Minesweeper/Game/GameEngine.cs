@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
+using Minesweeper.Models;
+
 namespace Minesweeper.Game
 {
     public class GameEngine

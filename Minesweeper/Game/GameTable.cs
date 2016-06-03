@@ -1,4 +1,5 @@
 ﻿using System;
+using Minesweeper.Models;
 
 namespace Minesweeper.Game
 {

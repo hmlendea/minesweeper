@@ -1,4 +1,4 @@
-﻿namespace Minesweeper.Game
+﻿namespace Minesweeper.Models
 {
     public class Tile
     {
