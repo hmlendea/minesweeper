@@ -34,7 +34,7 @@
         <child>
           <widget class="Gtk.MenuBar" id="menubar1">
             <property name="MemberName" />
-            <node name="__gtksharp_145_Stetic_Editor_ActionMenuBar" type="Menubar">
+            <node name="menubar1" type="Menubar">
               <node type="Menu" action="GameAction">
                 <node type="Menuitem" action="RetryAction" />
               </node>

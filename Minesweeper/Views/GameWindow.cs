@@ -1,33 +1,51 @@
 ﻿using System;
-using Gtk;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
 using Minesweeper.Game;
 
 namespace Minesweeper.Views
 {
-    public partial class GameWindow : Window
+    public partial class GameWindow : Gtk.Window
     {
         GameEngine gameEngine;
+        Color primaryColor, secondaryColor, backgroundColor;
+        Bitmap bmpFlag = Gdk.Pixbuf.LoadFromResource("Minesweeper.Resources.flag.png").ToBitmap();
+        Bitmap bmpMine = Gdk.Pixbuf.LoadFromResource("Minesweeper.Resources.mine.png").ToBitmap();
+        int tileSpacing;
+
+        Brush[] dangerBrushes =
+            {
+                Brushes.Black, Brushes.Green, Brushes.Orange, Brushes.Red, Brushes.DarkRed,
+                Brushes.Purple, Brushes.DarkBlue, Brushes.Blue, Brushes.Cyan
+            };
 
         public GameWindow()
-            : base(WindowType.Toplevel)
+            : base(Gtk.WindowType.Toplevel)
         {
             Build();
+
             daTable.DoubleBuffered = false;
 
+            tileSpacing = 2;
+
+            backgroundColor = Color.GhostWhite;
+            primaryColor = Color.CornflowerBlue;
+            secondaryColor = Color.White;
+
             gameEngine = new GameEngine(16, 24);
-            gameEngine.GdkWindowTable = daTable.GdkWindow;
-            gameEngine.GdkWindowInfoBar = daInfoBar.GdkWindow;
 
             NewGame();
 
             daTable.ExposeEvent += delegate
             {
-                gameEngine.DrawTable();
+                DrawTable();
             };
             daInfoBar.ExposeEvent += delegate
             {
-                gameEngine.DrawInfoBar();
+                DrawInfoBar();
             };
+            
             daTable.AddEvents((int)Gdk.EventMask.ButtonPressMask);
         }
 
@@ -39,19 +57,112 @@ namespace Minesweeper.Views
 
         void Draw()
         {
-            gameEngine.DrawTable();
-            gameEngine.DrawInfoBar();
+            DrawTable();
+            DrawInfoBar();
         }
 
-        static void ShowDialog(string title, string message, MessageType msgType, ButtonsType btnType)
+        static void ShowDialog(string title, string message, Gtk.MessageType msgType, Gtk.ButtonsType btnType)
         {
-            MessageDialog md = new MessageDialog(null, DialogFlags.Modal, msgType, btnType, message);
+            Gtk.MessageDialog md = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, msgType, btnType, message);
             md.Title = title;
             md.Run();
             md.Destroy();
         }
 
-        protected void OnDaTableButtonPressEvent(object o, ButtonPressEventArgs args)
+        public void DrawTable()
+        {
+            int x, y;
+            int width, height;
+            int tileSize;
+            Gdk.Drawable drawable = daTable.GdkWindow;
+            Graphics gfx = Gtk.DotNet.Graphics.FromDrawable(drawable);
+            Rectangle recTable;
+            Brush brBakcground = new SolidBrush(backgroundColor);
+            Brush brActiveTile = new SolidBrush(primaryColor);
+            Brush brClearedTile = new SolidBrush(secondaryColor);
+            Font font;
+            StringFormat strFormat = new StringFormat();
+
+            drawable.GetSize(out width, out height);
+            tileSize = (width - gameEngine.TableSize * tileSpacing) / gameEngine.TableSize;
+            recTable = new Rectangle(0, 0, width, height);
+
+            font = new Font("Sans", (int)(tileSize * 0.5), FontStyle.Regular);
+            strFormat.Alignment = StringAlignment.Center;
+            strFormat.LineAlignment = StringAlignment.Center;
+
+            gfx.SmoothingMode = SmoothingMode.AntiAlias;
+
+            gfx.FillRectangle(brBakcground, recTable);
+
+            for (y = 0; y < gameEngine.TableSize; y++)
+                for (x = 0; x < gameEngine.TableSize; x++)
+                {
+                    recTable = new Rectangle(
+                        tileSpacing / 2 + x * tileSize + x * tileSpacing,
+                        tileSpacing / 2 + y * tileSize + y * tileSpacing,
+                        tileSize, tileSize);
+
+                    if (gameEngine.GameTable.Tiles[x, y].Cleared)
+                        gfx.FillRectangle(brClearedTile, recTable);
+                    else
+                        gfx.FillRectangle(brActiveTile, recTable);
+
+                    if (gameEngine.GameTable.Tiles[x, y].Cleared && gameEngine.GameTable.Tiles[x, y].DangerLevel > 0)
+                        gfx.DrawString(
+                            gameEngine.GameTable.Tiles[x, y].DangerLevel.ToString(), font,
+                            dangerBrushes[gameEngine.GameTable.Tiles[x, y].DangerLevel], recTable, strFormat);
+
+                    if (gameEngine.GameTable.Tiles[x, y].Mined && !gameEngine.Alive)
+                        gfx.DrawImage(bmpMine, recTable);
+
+                    if (gameEngine.GameTable.Tiles[x, y].Flagged)
+                        gfx.DrawImage(bmpFlag, recTable);
+                }
+
+            gfx.Dispose();
+        }
+
+        public void DrawInfoBar()
+        {
+            Gdk.Drawable drawable = daInfoBar.GdkWindow;
+            Graphics gfx = Gtk.DotNet.Graphics.FromDrawable(drawable);
+            Brush brBackground = new SolidBrush(backgroundColor);
+            Brush brForeground = new SolidBrush(primaryColor);
+
+
+            int width, height, widthThird;
+            drawable.GetSize(out width, out height);
+            widthThird = width / 3;
+
+            Rectangle recWhole = new Rectangle(0, 0, width, height);
+            Rectangle recLeft = new Rectangle(0, 0, widthThird, height);
+            Rectangle recMiddle = new Rectangle(widthThird, 0, widthThird, height);
+            Rectangle recRight = new Rectangle(widthThird * 2, 0, widthThird, height);
+
+            Font f = new Font("Sans", (int)(Math.Min(width, height) * 0.5), FontStyle.Regular);
+            StringFormat strFormat = new StringFormat();
+            strFormat.Alignment = StringAlignment.Center;
+            strFormat.LineAlignment = StringAlignment.Center;
+
+            string face;
+
+            gfx.FillRectangle(brBackground, recWhole);
+
+            if (gameEngine.Alive)
+                face = ":)";
+            else
+                face = ":(";
+
+            gfx.DrawString(gameEngine.FlagsRemaining.ToString(), f, brForeground, recLeft, strFormat);
+            gfx.DrawString(face, f, brForeground, recMiddle, strFormat);
+            gfx.DrawString(string.Format("{0:00}:{1:00}", (gameEngine.GameTime / 60) % 60, gameEngine.GameTime % 60),
+                f, brForeground, recRight, strFormat);
+
+            gfx.Dispose();
+        }
+
+        protected void OnDaTableButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
         {
             if (gameEngine.IsRunning)
             {
@@ -68,14 +179,14 @@ namespace Minesweeper.Views
 
                 if (gameEngine.Completed)
                 {
-                    ShowDialog("Level complete", "You have successfully cleared this level!", MessageType.Info, ButtonsType.Ok);
+                    ShowDialog("Level complete", "You have successfully cleared this level!", Gtk.MessageType.Info, Gtk.ButtonsType.Ok);
 
                     gameEngine.NewGame();
                     Draw();
                 }
                 else if (!gameEngine.Alive)
                 {
-                    ShowDialog("Game over", "You have detonated a bomb and lost this level! :(", MessageType.Warning, ButtonsType.Ok);
+                    ShowDialog("Game over", "You have detonated a bomb and lost this level! :(", Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
 
                     gameEngine.NewGame();
                     Draw();

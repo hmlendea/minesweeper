@@ -1,42 +1,14 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-
-using Minesweeper.Models;
+﻿using Minesweeper.Models;
 
 namespace Minesweeper.Game
 {
     public class GameEngine
     {
-        GameTable gameTable;
-        Color primaryColor, secondaryColor, backgroundColor;
-        Bitmap bmpFlag = Gdk.Pixbuf.LoadFromResource("Minesweeper.Resources.flag.png").ToBitmap();
-        Bitmap bmpMine = Gdk.Pixbuf.LoadFromResource("Minesweeper.Resources.mine.png").ToBitmap();
-
-        int tableSize, tileSpacing;
-        int flagsPlaced, flagsLimit, minesCount;
+        int minesCount;
         int gameTime;
         bool isRunning, alive;
 
-        Gdk.Window gdkWindowTable, gdkWindowInfoBar;
-
-        Brush[] dangerBrushes =
-            {
-                Brushes.Black, Brushes.Green, Brushes.Orange, Brushes.Red, Brushes.DarkRed,
-                Brushes.Purple, Brushes.DarkBlue, Brushes.Blue, Brushes.Cyan
-            };
-
-        public Gdk.Window GdkWindowTable
-        {
-            get { return gdkWindowTable; }
-            set { gdkWindowTable = value; }
-        }
-
-        public Gdk.Window GdkWindowInfoBar
-        {
-            get { return gdkWindowInfoBar; }
-            set { gdkWindowInfoBar = value; }
-        }
+        public GameTable GameTable { get; private set; }
 
         public bool Completed
         {
@@ -45,7 +17,7 @@ namespace Minesweeper.Game
                 if (!alive)
                     return false;
 
-                foreach (Tile tile in gameTable.Tiles)
+                foreach (Tile tile in GameTable.Tiles)
                     if ((!tile.Flagged && !tile.Cleared) || (tile.Flagged && !tile.Mined))
                         return false;
 
@@ -58,6 +30,8 @@ namespace Minesweeper.Game
             get { return gameTime; }
         }
 
+        public int TableSize { get; private set; }
+
         public bool IsRunning
         {
             get { return isRunning; }
@@ -68,46 +42,18 @@ namespace Minesweeper.Game
             get { return alive; }
         }
 
-        public int TableSize
-        {
-            get { return tableSize; }
-        }
+        public int FlagsLimit { get; private set; }
 
-        public int TileSpacing
-        {
-            get { return tileSpacing; }
-            set { tileSpacing = value; }
-        }
+        public int FlagsPlaced { get; private set; }
 
-        public Color PrimaryColor
-        {
-            get { return primaryColor; }
-            set { primaryColor = value; }
-        }
-
-        public Color SecondaryColor
-        {
-            get { return secondaryColor; }
-            set { secondaryColor = value; }
-        }
-
-        public Color BackgroundColor
-        {
-            get { return backgroundColor; }
-            set { backgroundColor = value; }
-        }
+        public int FlagsRemaining { get { return FlagsLimit - FlagsPlaced; } }
 
         public GameEngine(int tableSize, int mines)
         {
-            this.tableSize = tableSize;
-            tileSpacing = 2;
+            TableSize = tableSize;
 
             minesCount = mines;
-            flagsLimit = mines;
-
-            backgroundColor = Color.GhostWhite;
-            primaryColor = Color.CornflowerBlue;
-            secondaryColor = Color.White;
+            FlagsLimit = mines;
 
             GLib.Timeout.Add(1000, new GLib.TimeoutHandler(TimerTick));
         }
@@ -115,10 +61,7 @@ namespace Minesweeper.Game
         bool TimerTick()
         {
             if (isRunning)
-            {
                 gameTime += 1;
-                DrawInfoBar();
-            }
             
             return true;
         }
@@ -126,101 +69,12 @@ namespace Minesweeper.Game
         public void NewGame()
         {
             alive = true;
-            flagsPlaced = 0;
+            FlagsPlaced = 0;
 
-            gameTable = new GameTable(tableSize, minesCount);
+            GameTable = new GameTable(TableSize, minesCount);
 
             gameTime = 0;
             isRunning = true;
-        }
-
-        public void DrawTable()
-        {
-            int x, y;
-            int width, height;
-            int tileSize;
-            Graphics gfx = Gtk.DotNet.Graphics.FromDrawable(gdkWindowTable);
-            Rectangle recTable;
-            Brush brBakcground = new SolidBrush(backgroundColor);
-            Brush brActiveTile = new SolidBrush(primaryColor);
-            Brush brClearedTile = new SolidBrush(secondaryColor);
-            Font font;
-            StringFormat strFormat = new StringFormat();
-
-            gdkWindowTable.GetSize(out width, out height);
-            tileSize = (width - tableSize * tileSpacing) / tableSize;
-            recTable = new Rectangle(0, 0, width, height);
-
-            font = new Font("Sans", (int)(tileSize * 0.5), FontStyle.Regular);
-            strFormat.Alignment = StringAlignment.Center;
-            strFormat.LineAlignment = StringAlignment.Center;
-
-            gfx.SmoothingMode = SmoothingMode.AntiAlias;
-
-            gfx.FillRectangle(brBakcground, recTable);
-
-            for (y = 0; y < tableSize; y++)
-                for (x = 0; x < tableSize; x++)
-                {
-                    recTable = new Rectangle(
-                        tileSpacing / 2 + x * tileSize + x * tileSpacing,
-                        tileSpacing / 2 + y * tileSize + y * tileSpacing,
-                        tileSize, tileSize);
-
-                    if (gameTable.Tiles[x, y].Cleared)
-                        gfx.FillRectangle(brClearedTile, recTable);
-                    else
-                        gfx.FillRectangle(brActiveTile, recTable);
-
-                    if (gameTable.Tiles[x, y].Cleared && gameTable.Tiles[x, y].DangerLevel > 0)
-                        gfx.DrawString(
-                            gameTable.Tiles[x, y].DangerLevel.ToString(), font,
-                            dangerBrushes[gameTable.Tiles[x, y].DangerLevel], recTable, strFormat);
-
-                    if (gameTable.Tiles[x, y].Mined && !alive)
-                        gfx.DrawImage(bmpMine, recTable);
-                    
-                    if (gameTable.Tiles[x, y].Flagged)
-                        gfx.DrawImage(bmpFlag, recTable);
-                }
-            
-            gfx.Dispose();
-        }
-
-        public void DrawInfoBar()
-        {
-            Graphics gfx = Gtk.DotNet.Graphics.FromDrawable(gdkWindowInfoBar);
-            Brush brBackground = new SolidBrush(backgroundColor);
-            Brush brForeground = new SolidBrush(primaryColor);
-
-            int width, height, widthThird;
-            gdkWindowInfoBar.GetSize(out width, out height);
-            widthThird = width / 3;
-
-            Rectangle recWhole = new Rectangle(0, 0, width, height);
-            Rectangle recLeft = new Rectangle(0, 0, widthThird, height);
-            Rectangle recMiddle = new Rectangle(widthThird, 0, widthThird, height);
-            Rectangle recRight = new Rectangle(widthThird * 2, 0, widthThird, height);
-
-            Font f = new Font("Sans", (int)(Math.Min(width, height) * 0.5), FontStyle.Regular);
-            StringFormat strFormat = new StringFormat();
-            strFormat.Alignment = StringAlignment.Center;
-            strFormat.LineAlignment = StringAlignment.Center;
-
-            string face;
-
-            gfx.FillRectangle(brBackground, recWhole);
-
-            if (alive)
-                face = ":)";
-            else
-                face = ":(";
-
-            gfx.DrawString((flagsLimit - flagsPlaced).ToString(), f, brForeground, recLeft, strFormat);
-            gfx.DrawString(face, f, brForeground, recMiddle, strFormat);
-            gfx.DrawString(string.Format("{0:00}:{1:00}", (gameTime / 60) % 60, gameTime % 60), f, brForeground, recRight, strFormat);
-
-            gfx.Dispose();
         }
 
         public void ClearTile(int x, int y)
@@ -228,49 +82,49 @@ namespace Minesweeper.Game
             int[] dx = { -1, -1, -1, 0, 1, 1, 1, 0 };
             int[] dy = { -1, 0, 1, 1, 1, 0, -1, -1 };
 
-            if (gameTable.Tiles[x, y].Cleared || gameTable.Tiles[x, y].Flagged)
+            if (GameTable.Tiles[x, y].Cleared || GameTable.Tiles[x, y].Flagged)
                 return;
 
-            if (gameTable.Tiles[x, y].Mined)
+            if (GameTable.Tiles[x, y].Mined)
             {
                 alive = false;
                 isRunning = false;
                 return;
             }
 
-            gameTable.Tiles[x, y].Cleared = true;
+            GameTable.Tiles[x, y].Cleared = true;
 
-            if (gameTable.Tiles[x, y].DangerLevel == 0 && !gameTable.Tiles[x, y].Mined)
+            if (GameTable.Tiles[x, y].DangerLevel == 0 && !GameTable.Tiles[x, y].Mined)
                 for (int dir = 0; dir < 8; dir++)
                 {
                     int x2 = dx[dir] + x;
                     int y2 = dy[dir] + y;
 
                     if (x2 >= 0 && x2 < TableSize && y2 >= 0 && y2 < TableSize)
-                    if (!gameTable.Tiles[x2, y2].Cleared && !gameTable.Tiles[x2, y2].Flagged)
+                    if (!GameTable.Tiles[x2, y2].Cleared && !GameTable.Tiles[x2, y2].Flagged)
                         ClearTile(x2, y2);
                 }
         }
 
         public void FlagTile(int x, int y)
         {
-            if (gameTable.Tiles[x, y].Cleared)
+            if (GameTable.Tiles[x, y].Cleared)
                 return;
 
             // Flag it
-            if (!gameTable.Tiles[x, y].Flagged)
+            if (!GameTable.Tiles[x, y].Flagged)
             {
-                if (flagsPlaced < flagsLimit)
+                if (FlagsPlaced < FlagsLimit)
                 {
-                    gameTable.Tiles[x, y].Flagged = true;
-                    flagsPlaced += 1;
+                    GameTable.Tiles[x, y].Flagged = true;
+                    FlagsPlaced += 1;
                 }
             }
             // Unflag it
             else
             {
-                gameTable.Tiles[x, y].Flagged = false;
-                flagsPlaced -= 1;
+                GameTable.Tiles[x, y].Flagged = false;
+                FlagsPlaced -= 1;
             }
         }
     }
