@@ -44,7 +44,7 @@ namespace Minesweeper.Game
                     return false;
 
                 foreach (Tile tile in gameTable.Tiles)
-                    if ((!tile.IsFlagged && !tile.IsCleared) || (tile.IsFlagged && !tile.IsMined))
+                    if ((!tile.Flagged && !tile.Cleared) || (tile.Flagged && !tile.Mined))
                         return false;
 
                 return true;
@@ -165,20 +165,20 @@ namespace Minesweeper.Game
                         tileSpacing / 2 + y * tileSize + y * tileSpacing,
                         tileSize, tileSize);
 
-                    if (gameTable.Tiles[x, y].IsCleared)
+                    if (gameTable.Tiles[x, y].Cleared)
                         gfx.FillRectangle(brClearedTile, recTable);
                     else
                         gfx.FillRectangle(brActiveTile, recTable);
 
-                    if (gameTable.Tiles[x, y].IsCleared && gameTable.Tiles[x, y].DangerLevel > 0)
+                    if (gameTable.Tiles[x, y].Cleared && gameTable.Tiles[x, y].DangerLevel > 0)
                         gfx.DrawString(
                             gameTable.Tiles[x, y].DangerLevel.ToString(), font,
                             dangerBrushes[gameTable.Tiles[x, y].DangerLevel], recTable, strFormat);
 
-                    if (gameTable.Tiles[x, y].IsMined && !alive)
+                    if (gameTable.Tiles[x, y].Mined && !alive)
                         gfx.DrawImage(bmpMine, recTable);
                     
-                    if (gameTable.Tiles[x, y].IsFlagged)
+                    if (gameTable.Tiles[x, y].Flagged)
                         gfx.DrawImage(bmpFlag, recTable);
                 }
             
@@ -226,48 +226,48 @@ namespace Minesweeper.Game
             int[] dx = { -1, -1, -1, 0, 1, 1, 1, 0 };
             int[] dy = { -1, 0, 1, 1, 1, 0, -1, -1 };
 
-            if (gameTable.Tiles[x, y].IsCleared || gameTable.Tiles[x, y].IsFlagged)
+            if (gameTable.Tiles[x, y].Cleared || gameTable.Tiles[x, y].Flagged)
                 return;
 
-            if (gameTable.Tiles[x, y].IsMined)
+            if (gameTable.Tiles[x, y].Mined)
             {
                 alive = false;
                 isRunning = false;
                 return;
             }
 
-            gameTable.Tiles[x, y].IsCleared = true;
+            gameTable.Tiles[x, y].Cleared = true;
 
-            if (gameTable.Tiles[x, y].DangerLevel == 0 && !gameTable.Tiles[x, y].IsMined)
+            if (gameTable.Tiles[x, y].DangerLevel == 0 && !gameTable.Tiles[x, y].Mined)
                 for (int dir = 0; dir < 8; dir++)
                 {
                     int x2 = dx[dir] + x;
                     int y2 = dy[dir] + y;
 
                     if (x2 >= 0 && x2 < TableSize && y2 >= 0 && y2 < TableSize)
-                    if (!gameTable.Tiles[x2, y2].IsCleared && !gameTable.Tiles[x2, y2].IsFlagged)
+                    if (!gameTable.Tiles[x2, y2].Cleared && !gameTable.Tiles[x2, y2].Flagged)
                         ClearTile(x2, y2);
                 }
         }
 
         public void FlagTile(int x, int y)
         {
-            if (gameTable.Tiles[x, y].IsCleared)
+            if (gameTable.Tiles[x, y].Cleared)
                 return;
 
             // Flag it
-            if (!gameTable.Tiles[x, y].IsFlagged)
+            if (!gameTable.Tiles[x, y].Flagged)
             {
                 if (flagsPlaced < flagsLimit)
                 {
-                    gameTable.Tiles[x, y].IsFlagged = true;
+                    gameTable.Tiles[x, y].Flagged = true;
                     flagsPlaced += 1;
                 }
             }
             // Unflag it
             else
             {
-                gameTable.Tiles[x, y].IsFlagged = false;
+                gameTable.Tiles[x, y].Flagged = false;
                 flagsPlaced -= 1;
             }
         }

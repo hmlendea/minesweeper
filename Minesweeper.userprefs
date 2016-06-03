@@ -1,12 +1,6 @@
 ﻿<Properties StartupItem="Minesweeper/Minesweeper.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Minesweeper/Views/GameWindow.cs">
-    <Files>
-      <File FileName="Minesweeper/Game/GameEngine.cs" Line="1" Column="1" />
-      <File FileName="Minesweeper/Utils/Extensions.cs" Line="1" Column="1" />
-      <File FileName="Minesweeper/Views/GameWindow.cs" Line="14" Column="21" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

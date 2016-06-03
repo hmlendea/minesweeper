@@ -61,8 +61,8 @@ namespace Minesweeper.Game
                 int x = rnd.Next(0, tableSize);
                 int y = rnd.Next(0, tableSize);
 
-                if (!tiles[x, y].IsMined)
-                    tiles[x, y].IsMined = true;
+                if (!tiles[x, y].Mined)
+                    tiles[x, y].Mined = true;
                 else
                     mine -= 1;
             }
@@ -75,10 +75,10 @@ namespace Minesweeper.Game
 
             for (int x = 0; x < tableSize; x++)
                 for (int y = 0; y < tableSize; y++)
-                    if (tiles[x, y].IsMined)
+                    if (tiles[x, y].Mined)
                         for (int dir = 0; dir < 8; dir++)
                             if (dx[dir] + x >= 0 && dx[dir] + x < tableSize && dy[dir] + y >= 0 && dy[dir] + y < tableSize)
-                            if (!tiles[x + dx[dir], y + dy[dir]].IsMined)
+                            if (!tiles[x + dx[dir], y + dy[dir]].Mined)
                                 tiles[x + dx[dir], y + dy[dir]].DangerLevel += 1;
         }
     }
