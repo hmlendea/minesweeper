@@ -6,6 +6,9 @@ using Minesweeper.Game;
 
 namespace Minesweeper.Views
 {
+    /// <summary>
+    /// Game window.
+    /// </summary>
     public partial class GameWindow : Gtk.Window
     {
         GameEngine gameEngine;
@@ -20,6 +23,9 @@ namespace Minesweeper.Views
                 Brushes.Purple, Brushes.DarkBlue, Brushes.Blue, Brushes.Cyan
             };
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Minesweeper.Views.GameWindow"/> class.
+        /// </summary>
         public GameWindow()
             : base(Gtk.WindowType.Toplevel)
         {
@@ -69,7 +75,7 @@ namespace Minesweeper.Views
             md.Destroy();
         }
 
-        public void DrawTable()
+        void DrawTable()
         {
             int x, y;
             int width, height;
@@ -123,7 +129,7 @@ namespace Minesweeper.Views
             gfx.Dispose();
         }
 
-        public void DrawInfoBar()
+        void DrawInfoBar()
         {
             Gdk.Drawable drawable = daInfoBar.GdkWindow;
             Graphics gfx = Gtk.DotNet.Graphics.FromDrawable(drawable);
@@ -162,6 +168,11 @@ namespace Minesweeper.Views
             gfx.Dispose();
         }
 
+        /// <summary>
+        /// Raises the da table button press event event.
+        /// </summary>
+        /// <param name="o">O.</param>
+        /// <param name="args">Arguments.</param>
         protected void OnDaTableButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
         {
             if (gameEngine.IsRunning)
@@ -194,6 +205,11 @@ namespace Minesweeper.Views
             }
         }
 
+        /// <summary>
+        /// Raises the retry action activated event.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
         protected void OnRetryActionActivated(object sender, EventArgs e)
         {
             NewGame();
