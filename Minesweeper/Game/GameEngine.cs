@@ -4,17 +4,69 @@ namespace Minesweeper.Game
 {
     public class GameEngine
     {
-        int minesCount;
-        int gameTime;
-        bool isRunning, alive;
-
+        /// <summary>
+        /// Gets the game table.
+        /// </summary>
+        /// <value>The game table.</value>
         public GameTable GameTable { get; private set; }
 
+        /// <summary>
+        /// Gets the game time.
+        /// </summary>
+        /// <value>The game time.</value>
+        public int GameTime { get; private set; }
+
+        /// <summary>
+        /// Gets the size of the table.
+        /// </summary>
+        /// <value>The size of the table.</value>
+        public int TableSize { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is running.
+        /// </summary>
+        /// <value><c>true</c> if this instance is running; otherwise, <c>false</c>.</value>
+        public bool IsRunning { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the player is alive.
+        /// </summary>
+        /// <value><c>true</c> if alive; otherwise, <c>false</c>.</value>
+        public bool Alive { get; private set; }
+
+        /// <summary>
+        /// Gets the mines count.
+        /// </summary>
+        /// <value>The mines count.</value>
+        public int MinesCount { get; private set; }
+
+        /// <summary>
+        /// Gets the flags limit.
+        /// </summary>
+        /// <value>The flags limit.</value>
+        public int FlagsLimit { get; private set; }
+
+        /// <summary>
+        /// Gets the flags placed.
+        /// </summary>
+        /// <value>The flags placed.</value>
+        public int FlagsPlaced { get; private set; }
+
+        /// <summary>
+        /// Gets the flags remaining.
+        /// </summary>
+        /// <value>The flags remaining.</value>
+        public int FlagsRemaining { get { return FlagsLimit - FlagsPlaced; } }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Minesweeper.Game.GameEngine"/> is completed.
+        /// </summary>
+        /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
         public bool Completed
         {
             get
             {
-                if (!alive)
+                if (!Alive)
                     return false;
 
                 foreach (Tile tile in GameTable.Tiles)
@@ -25,58 +77,40 @@ namespace Minesweeper.Game
             }
         }
 
-        public int GameTime
-        {
-            get { return gameTime; }
-        }
-
-        public int TableSize { get; private set; }
-
-        public bool IsRunning
-        {
-            get { return isRunning; }
-        }
-
-        public bool Alive
-        {
-            get { return alive; }
-        }
-
-        public int FlagsLimit { get; private set; }
-
-        public int FlagsPlaced { get; private set; }
-
-        public int FlagsRemaining { get { return FlagsLimit - FlagsPlaced; } }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Minesweeper.Game.GameEngine"/> class.
+        /// </summary>
+        /// <param name="tableSize">Table size.</param>
+        /// <param name="mines">Mines.</param>
         public GameEngine(int tableSize, int mines)
         {
             TableSize = tableSize;
 
-            minesCount = mines;
+            MinesCount = mines;
             FlagsLimit = mines;
 
             GLib.Timeout.Add(1000, new GLib.TimeoutHandler(TimerTick));
         }
 
-        bool TimerTick()
-        {
-            if (isRunning)
-                gameTime += 1;
-            
-            return true;
-        }
-
+        /// <summary>
+        /// Starts a new game.
+        /// </summary>
         public void NewGame()
         {
-            alive = true;
+            Alive = true;
             FlagsPlaced = 0;
 
-            GameTable = new GameTable(TableSize, minesCount);
+            GameTable = new GameTable(TableSize, MinesCount);
 
-            gameTime = 0;
-            isRunning = true;
+            GameTime = 0;
+            IsRunning = true;
         }
 
+        /// <summary>
+        /// Clears the tile.
+        /// </summary>
+        /// <param name="x">The X coordinate.</param>
+        /// <param name="y">The Y coordinate.</param>
         public void ClearTile(int x, int y)
         {
             int[] dx = { -1, -1, -1, 0, 1, 1, 1, 0 };
@@ -87,8 +121,8 @@ namespace Minesweeper.Game
 
             if (GameTable.Tiles[x, y].Mined)
             {
-                alive = false;
-                isRunning = false;
+                Alive = false;
+                IsRunning = false;
                 return;
             }
 
@@ -106,6 +140,11 @@ namespace Minesweeper.Game
                 }
         }
 
+        /// <summary>
+        /// Flags the tile.
+        /// </summary>
+        /// <param name="x">The X coordinate.</param>
+        /// <param name="y">The Y coordinate.</param>
         public void FlagTile(int x, int y)
         {
             if (GameTable.Tiles[x, y].Cleared)
@@ -126,6 +165,14 @@ namespace Minesweeper.Game
                 GameTable.Tiles[x, y].Flagged = false;
                 FlagsPlaced -= 1;
             }
+        }
+
+        bool TimerTick()
+        {
+            if (IsRunning)
+                GameTime += 1;
+            
+            return true;
         }
     }
 }
