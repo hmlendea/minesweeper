@@ -40,7 +40,7 @@ namespace Minesweeper.Models
         /// <returns>A <see cref="System.String"/> that represents the current <see cref="Minesweeper.Models.EntityBase"/>.</returns>
         public override string ToString()
         {
-            return GetType() + " #" + Id;
+            return string.Format("{0} #{1}", base.ToString(), Id);
         }
     }
 }
