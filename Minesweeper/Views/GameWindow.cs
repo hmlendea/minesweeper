@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
+using Minesweeper.Models;
 using Minesweeper.Game;
 
 namespace Minesweeper.Views
@@ -109,20 +110,22 @@ namespace Minesweeper.Views
                         tileSpacing / 2 + y * tileSize + y * tileSpacing,
                         tileSize, tileSize);
 
-                    if (gameEngine.Tiles[x, y].Cleared)
+                    Tile tile = gameEngine.GetTile(x, y);
+
+                    if (tile.Cleared)
                         gfx.FillRectangle(brClearedTile, recTable);
                     else
                         gfx.FillRectangle(brActiveTile, recTable);
 
-                    if (gameEngine.Tiles[x, y].Cleared && gameEngine.Tiles[x, y].DangerLevel > 0)
+                    if (tile.Cleared && tile.DangerLevel > 0)
                         gfx.DrawString(
-                            gameEngine.Tiles[x, y].DangerLevel.ToString(), font,
-                            dangerBrushes[gameEngine.Tiles[x, y].DangerLevel], recTable, strFormat);
+                            tile.DangerLevel.ToString(), font,
+                            dangerBrushes[tile.DangerLevel], recTable, strFormat);
 
-                    if (gameEngine.Tiles[x, y].Mined && !gameEngine.Alive)
+                    if (tile.Mined && !gameEngine.Alive)
                         gfx.DrawImage(bmpMine, recTable);
 
-                    if (gameEngine.Tiles[x, y].Flagged)
+                    if (tile.Flagged)
                         gfx.DrawImage(bmpFlag, recTable);
                 }
 

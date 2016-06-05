@@ -61,6 +61,7 @@
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Models\EntityBase.cs" />
     <Compile Include="Repositories\RepositoryException.cs" />
+    <Compile Include="Repositories\TileRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -18,7 +18,7 @@ namespace Minesweeper.Repositories
             Entities = new List<T>();
         }
 
-        public virtual void Create(T entity)
+        public virtual void Add(T entity)
         {
             if (Entities.Contains(entity))
                 throw new RepositoryException("The specified entity already exists");

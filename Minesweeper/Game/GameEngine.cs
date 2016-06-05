@@ -1,15 +1,13 @@
 ﻿using System;
+
 using Minesweeper.Models;
+using Minesweeper.Repositories;
 
 namespace Minesweeper.Game
 {
     public class GameEngine
     {
-        /// <summary>
-        /// Gets or sets the tiles.
-        /// </summary>
-        /// <value>The tiles.</value>
-        public Tile[,] Tiles { get; set; }
+        TileRepository tileRepository;
 
         /// <summary>
         /// Gets the game time.
@@ -70,7 +68,7 @@ namespace Minesweeper.Game
                 if (!Alive)
                     return false;
 
-                foreach (Tile tile in Tiles)
+                foreach (Tile tile in tileRepository.GetAll())
                     if ((!tile.Flagged && !tile.Cleared) || (tile.Flagged && !tile.Mined))
                         return false;
 
@@ -85,6 +83,7 @@ namespace Minesweeper.Game
         /// <param name="mines">Mines.</param>
         public GameEngine(int tableSize, int mines)
         {
+            tileRepository = new TileRepository();
             TableSize = tableSize;
 
             MinesCount = mines;
@@ -119,26 +118,30 @@ namespace Minesweeper.Game
             int[] dx = { -1, -1, -1, 0, 1, 1, 1, 0 };
             int[] dy = { -1, 0, 1, 1, 1, 0, -1, -1 };
 
-            if (Tiles[x, y].Cleared || Tiles[x, y].Flagged)
+            Tile tile = tileRepository.Get(x, y);
+
+            if (tile.Cleared || tile.Flagged)
                 return;
 
-            if (Tiles[x, y].Mined)
+            if (tile.Mined)
             {
                 Alive = false;
                 IsRunning = false;
                 return;
             }
 
-            Tiles[x, y].Cleared = true;
+            tile.Cleared = true;
 
-            if (Tiles[x, y].DangerLevel == 0 && !Tiles[x, y].Mined)
+            if (tile.DangerLevel == 0)
                 for (int dir = 0; dir < 8; dir++)
                 {
                     int x2 = dx[dir] + x;
                     int y2 = dy[dir] + y;
 
+                    Tile tile2 = tileRepository.Get(x2, y2);
+
                     if (x2 >= 0 && x2 < TableSize && y2 >= 0 && y2 < TableSize)
-                    if (!Tiles[x2, y2].Cleared && !Tiles[x2, y2].Flagged)
+                    if (!tile2.Cleared && !tile2.Flagged)
                         ClearTile(x2, y2);
                 }
         }
@@ -150,22 +153,24 @@ namespace Minesweeper.Game
         /// <param name="y">The Y coordinate.</param>
         public void FlagTile(int x, int y)
         {
-            if (Tiles[x, y].Cleared)
+            Tile tile = tileRepository.Get(x, y);
+
+            if (tile.Cleared)
                 return;
 
             // Flag it
-            if (!Tiles[x, y].Flagged)
+            if (!tile.Flagged)
             {
                 if (FlagsPlaced < FlagsLimit)
                 {
-                    Tiles[x, y].Flagged = true;
+                    tile.Flagged = true;
                     FlagsPlaced += 1;
                 }
             }
             // Unflag it
             else
             {
-                Tiles[x, y].Flagged = false;
+                tile.Flagged = false;
                 FlagsPlaced -= 1;
             }
         }
@@ -195,14 +200,16 @@ namespace Minesweeper.Game
 
         void InitializeTiles()
         {
-            Tiles = new Tile[TableSize, TableSize];
+            tileRepository.Clear();
 
-            for (int i = 0; i < TableSize; i++)
-                for (int j = 0; j < TableSize; j++)
+            for (int x = 0; x < TableSize; x++)
+                for (int y = 0; y < TableSize; y++)
                 {
-                    Tiles[i, j] = new Tile();
-                    Tiles[i, j].X = i;
-                    Tiles[i, j].Y = j;
+                    Tile tile = new Tile();
+                    tile.X = x;
+                    tile.Y = y;
+
+                    tileRepository.Add(tile);
                 } 
         }
 
@@ -215,8 +222,10 @@ namespace Minesweeper.Game
                 int x = rnd.Next(0, TableSize);
                 int y = rnd.Next(0, TableSize);
 
-                if (!Tiles[x, y].Mined)
-                    Tiles[x, y].Mined = true;
+                Tile tile = tileRepository.Get(x, y);
+
+                if (!tile.Mined)
+                    tile.Mined = true;
                 else
                     mine -= 1;
             }
@@ -229,11 +238,29 @@ namespace Minesweeper.Game
 
             for (int x = 0; x < TableSize; x++)
                 for (int y = 0; y < TableSize; y++)
-                    if (Tiles[x, y].Mined)
+                {
+                    Tile tile = tileRepository.Get(x, y);
+
+                    if (tile.Mined)
                         for (int dir = 0; dir < 8; dir++)
                             if (dx[dir] + x >= 0 && dx[dir] + x < TableSize && dy[dir] + y >= 0 && dy[dir] + y < TableSize)
-                            if (!Tiles[x + dx[dir], y + dy[dir]].Mined)
-                                Tiles[x + dx[dir], y + dy[dir]].DangerLevel += 1;
+                            {
+                                Tile tile2 = tileRepository.Get(x + dx[dir], y + dy[dir]);
+
+                                if (!tile2.Mined)
+                                    tile2.DangerLevel += 1;
+                            }
+                }
+        }
+
+        /// <summary>
+        /// Get a tile based on it's location
+        /// </summary>
+        /// <param name="x">The X coordinate.</param>
+        /// <param name="y">The Y coordinate.</param>
+        public Tile GetTile(int x, int y)
+        {
+            return tileRepository.Get(x, y);
         }
     }
 }
