@@ -3,9 +3,9 @@
 using Minesweeper.Models;
 using Minesweeper.Repositories;
 
-namespace Minesweeper.Game
+namespace Minesweeper.Controllers
 {
-    public class GameEngine
+    public class GameController
     {
         TileRepository tileRepository;
 
@@ -81,7 +81,7 @@ namespace Minesweeper.Game
         /// </summary>
         /// <param name="tableSize">Table size.</param>
         /// <param name="mines">Mines.</param>
-        public GameEngine(int tableSize, int mines)
+        public GameController(int tableSize, int mines)
         {
             tileRepository = new TileRepository();
             TableSize = tableSize;

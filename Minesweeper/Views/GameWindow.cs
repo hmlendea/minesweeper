@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 
 using Minesweeper.Models;
-using Minesweeper.Game;
+using Minesweeper.Controllers;
 
 namespace Minesweeper.Views
 {
@@ -12,7 +12,7 @@ namespace Minesweeper.Views
     /// </summary>
     public partial class GameWindow : Gtk.Window
     {
-        GameEngine gameEngine;
+        GameController gameEngine;
         Color primaryColor, secondaryColor, backgroundColor;
         Bitmap bmpFlag = Gdk.Pixbuf.LoadFromResource("Minesweeper.Resources.flag.png").ToBitmap();
         Bitmap bmpMine = Gdk.Pixbuf.LoadFromResource("Minesweeper.Resources.mine.png").ToBitmap();
@@ -40,7 +40,7 @@ namespace Minesweeper.Views
             primaryColor = Color.CornflowerBlue;
             secondaryColor = Color.White;
 
-            gameEngine = new GameEngine(16, 24);
+            gameEngine = new GameController(16, 24);
 
             NewGame();
 
