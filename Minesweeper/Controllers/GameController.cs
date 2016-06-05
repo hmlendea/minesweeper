@@ -86,26 +86,14 @@ namespace Minesweeper.Controllers
             tileRepository = new TileRepository();
             TableSize = tableSize;
 
+            Alive = true;
             MinesCount = mines;
             FlagsLimit = mines;
 
             GenerateTable();
 
-            GLib.Timeout.Add(1000, new GLib.TimeoutHandler(TimerTick));
-        }
-
-        /// <summary>
-        /// Starts a new game.
-        /// </summary>
-        public void NewGame()
-        {
-            Alive = true;
-            FlagsPlaced = 0;
-
-            GenerateTable();
-
-            GameTime = 0;
             IsRunning = true;
+            GLib.Timeout.Add(1000, new GLib.TimeoutHandler(TimerTick));
         }
 
         /// <summary>

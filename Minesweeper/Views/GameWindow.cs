@@ -12,7 +12,7 @@ namespace Minesweeper.Views
     /// </summary>
     public partial class GameWindow : Gtk.Window
     {
-        GameController gameEngine;
+        GameController game;
         Color primaryColor, secondaryColor, backgroundColor;
         Bitmap bmpFlag = Gdk.Pixbuf.LoadFromResource("Minesweeper.Resources.flag.png").ToBitmap();
         Bitmap bmpMine = Gdk.Pixbuf.LoadFromResource("Minesweeper.Resources.mine.png").ToBitmap();
@@ -40,8 +40,6 @@ namespace Minesweeper.Views
             primaryColor = Color.CornflowerBlue;
             secondaryColor = Color.White;
 
-            gameEngine = new GameController(16, 24);
-
             NewGame();
 
             daTable.ExposeEvent += delegate
@@ -58,7 +56,7 @@ namespace Minesweeper.Views
 
         void NewGame()
         {
-            gameEngine.NewGame();
+            game = new GameController(16, 24);
             Draw();
         }
 
@@ -91,7 +89,7 @@ namespace Minesweeper.Views
             StringFormat strFormat = new StringFormat();
 
             drawable.GetSize(out width, out height);
-            tileSize = (width - gameEngine.TableSize * tileSpacing) / gameEngine.TableSize;
+            tileSize = (width - game.TableSize * tileSpacing) / game.TableSize;
             recTable = new Rectangle(0, 0, width, height);
 
             font = new Font("Sans", (int)(tileSize * 0.5), FontStyle.Regular);
@@ -102,15 +100,15 @@ namespace Minesweeper.Views
 
             gfx.FillRectangle(brBakcground, recTable);
 
-            for (y = 0; y < gameEngine.TableSize; y++)
-                for (x = 0; x < gameEngine.TableSize; x++)
+            for (y = 0; y < game.TableSize; y++)
+                for (x = 0; x < game.TableSize; x++)
                 {
                     recTable = new Rectangle(
                         tileSpacing / 2 + x * tileSize + x * tileSpacing,
                         tileSpacing / 2 + y * tileSize + y * tileSpacing,
                         tileSize, tileSize);
 
-                    Tile tile = gameEngine.GetTile(x, y);
+                    Tile tile = game.GetTile(x, y);
 
                     if (tile.Cleared)
                         gfx.FillRectangle(brClearedTile, recTable);
@@ -122,7 +120,7 @@ namespace Minesweeper.Views
                             tile.DangerLevel.ToString(), font,
                             dangerBrushes[tile.DangerLevel], recTable, strFormat);
 
-                    if (tile.Mined && !gameEngine.Alive)
+                    if (tile.Mined && !game.Alive)
                         gfx.DrawImage(bmpMine, recTable);
 
                     if (tile.Flagged)
@@ -158,14 +156,14 @@ namespace Minesweeper.Views
 
             gfx.FillRectangle(brBackground, recWhole);
 
-            if (gameEngine.Alive)
+            if (game.Alive)
                 face = ":)";
             else
                 face = ":(";
 
-            gfx.DrawString(gameEngine.FlagsRemaining.ToString(), f, brForeground, recLeft, strFormat);
+            gfx.DrawString(game.FlagsRemaining.ToString(), f, brForeground, recLeft, strFormat);
             gfx.DrawString(face, f, brForeground, recMiddle, strFormat);
-            gfx.DrawString(string.Format("{0:00}:{1:00}", (gameEngine.GameTime / 60) % 60, gameEngine.GameTime % 60),
+            gfx.DrawString(string.Format("{0:00}:{1:00}", (game.GameTime / 60) % 60, game.GameTime % 60),
                 f, brForeground, recRight, strFormat);
 
             gfx.Dispose();
@@ -178,32 +176,30 @@ namespace Minesweeper.Views
         /// <param name="args">Arguments.</param>
         protected void OnDaTableButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
         {
-            if (gameEngine.IsRunning)
+            if (game.IsRunning)
             {
-                int tileSize = daTable.GdkWindow.GetWidth() / gameEngine.TableSize;
+                int tileSize = daTable.GdkWindow.GetWidth() / game.TableSize;
                 int x = (int)args.Event.X / tileSize;
                 int y = (int)args.Event.Y / tileSize;
 
                 if (args.Event.Button == 1) // Left mouse click
-                    gameEngine.ClearTile(x, y);
+                    game.ClearTile(x, y);
                 else if (args.Event.Button == 3) // Right mouse click
-                    gameEngine.FlagTile(x, y);
+                    game.FlagTile(x, y);
 
                 Draw();
 
-                if (gameEngine.Completed)
+                if (game.Completed)
                 {
                     ShowDialog("Level complete", "You have successfully cleared this level!", Gtk.MessageType.Info, Gtk.ButtonsType.Ok);
 
-                    gameEngine.NewGame();
-                    Draw();
+                    NewGame();
                 }
-                else if (!gameEngine.Alive)
+                else if (!game.Alive)
                 {
                     ShowDialog("Game over", "You have detonated a bomb and lost this level! :(", Gtk.MessageType.Warning, Gtk.ButtonsType.Ok);
 
-                    gameEngine.NewGame();
-                    Draw();
+                    NewGame();
                 }
             }
         }
