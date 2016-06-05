@@ -9,7 +9,7 @@
         /// Gets or sets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        public new string Id { get { return X + "," + Y; } }
+        public override string Id { get { return X + "," + Y; } }
 
         /// <summary>
         /// Gets or sets the size.
