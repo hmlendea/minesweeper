@@ -7,7 +7,7 @@ namespace Minesweeper.Controllers
 {
     public class GameController
     {
-        TileRepository tileRepository;
+        readonly TileRepository tileRepository;
 
         /// <summary>
         /// Gets the game time.
@@ -171,6 +171,19 @@ namespace Minesweeper.Controllers
             return true;
         }
 
+        /// <summary>
+        /// Get a tile based on it's location
+        /// </summary>
+        /// <param name="x">The X coordinate.</param>
+        /// <param name="y">The Y coordinate.</param>
+        public Tile GetTile(int x, int y)
+        {
+            return tileRepository.Get(x, y);
+        }
+
+        /// <summary>
+        /// Regenerate this instance.
+        /// </summary>
         public void Regenerate()
         {
             GenerateTable();
@@ -239,16 +252,6 @@ namespace Minesweeper.Controllers
                                     tile2.DangerLevel += 1;
                             }
                 }
-        }
-
-        /// <summary>
-        /// Get a tile based on it's location
-        /// </summary>
-        /// <param name="x">The X coordinate.</param>
-        /// <param name="y">The Y coordinate.</param>
-        public Tile GetTile(int x, int y)
-        {
-            return tileRepository.Get(x, y);
         }
     }
 }
