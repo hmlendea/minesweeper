@@ -36,7 +36,7 @@ namespace Minesweeper.Repositories
             return entity;
         }
 
-        public List<T> GetAll()
+        public virtual List<T> GetAll()
         {
             return Entities;
         }
@@ -63,17 +63,17 @@ namespace Minesweeper.Repositories
             Entities.RemoveAll(T => T.Id == id);
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             Entities.Clear();
         }
 
-        public bool Contains(T entity)
+        public virtual bool Contains(T entity)
         {
             return Entities.Find(E => E.Equals(entity)) != null;
         }
 
-        public bool Contains(string id)
+        public virtual bool Contains(string id)
         {
             return Entities.Find(E => E.Id == id) != null;
         }
