@@ -1,49 +1,18 @@
-﻿using System;
+using System;
 using System.Runtime.Serialization;
 
 namespace Minesweeper.Repositories
 {
-    /// <summary>
-    /// Repository exception.
-    /// </summary>
     [Serializable]
     public class RepositoryException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Minesweeper.Repositories.RepositoryException"/> class.
-        /// </summary>
-        public RepositoryException()
-        {
-        }
+        public const string DuplicateEntityError = "An entity with the same Id already exists in the repository.";
+        public const string EntityNotFoundError = "No entity with the specified Id was found in the repository.";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Minesweeper.Repositories.RepositoryException"/> class.
-        /// </summary>
-        /// <param name="message">Message.</param>
-        public RepositoryException(string message)
-            : base(message)
-        {
-        }
+        public RepositoryException() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Minesweeper.Repositories.RepositoryException"/> class.
-        /// </summary>
-        /// <param name="message">Message.</param>
-        /// <param name="innerException">Inner exception.</param>
-        public RepositoryException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+        public RepositoryException(string message) : base(message) { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Minesweeper.Repositories.RepositoryException"/> class.
-        /// </summary>
-        /// <param name="info">Info.</param>
-        /// <param name="context">Context.</param>
-        protected RepositoryException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+        public RepositoryException(string message, Exception inner) : base(message, inner) { }
     }
 }
-
