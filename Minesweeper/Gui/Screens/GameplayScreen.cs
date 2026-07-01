@@ -42,7 +42,7 @@ namespace Minesweeper.Gui.Screens
                     GameDefines.TableSize * GameDefines.MapTileSize)
             };
 
-            GuiManager.Instance.RegisterControls(infoBar, gameBoard);
+            GuiManager.Instance.RegisterControls(gameBoard, infoBar);
             RegisterEvents();
             SetChildrenProperties();
         }

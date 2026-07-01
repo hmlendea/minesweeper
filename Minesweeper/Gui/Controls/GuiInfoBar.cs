@@ -27,16 +27,19 @@ namespace Minesweeper.Gui.Controls
         {
             flagsText = new GuiText
             {
+                FontName = "InfoBarFont",
                 HorizontalAlignment = Alignment.Beginning,
                 VerticalAlignment = Alignment.Middle
             };
             faceText = new GuiText
             {
+                FontName = "InfoBarFont",
                 HorizontalAlignment = Alignment.Middle,
                 VerticalAlignment = Alignment.Middle
             };
             timerText = new GuiText
             {
+                FontName = "InfoBarFont",
                 HorizontalAlignment = Alignment.End,
                 VerticalAlignment = Alignment.Middle
             };
@@ -57,19 +60,19 @@ namespace Minesweeper.Gui.Controls
 
             flagsText.Location = Point2D.Empty;
             flagsText.Size = new Size2D(third, Size.Height);
-            flagsText.BackgroundColour = BackgroundColour;
+            flagsText.BackgroundColour = Colour.Transparent;
             flagsText.ForegroundColour = ForegroundColour;
             flagsText.Text = $"Mines: {game.FlagsRemaining}";
 
             faceText.Location = new Point2D(third, 0);
             faceText.Size = new Size2D(third, Size.Height);
-            faceText.BackgroundColour = BackgroundColour;
+            faceText.BackgroundColour = Colour.Transparent;
             faceText.ForegroundColour = ForegroundColour;
             faceText.Text = game.Alive ? ":)" : ":(";
 
             timerText.Location = new Point2D(third * 2, 0);
             timerText.Size = new Size2D(third, Size.Height);
-            timerText.BackgroundColour = BackgroundColour;
+            timerText.BackgroundColour = Colour.Transparent;
             timerText.ForegroundColour = ForegroundColour;
             timerText.Text = $"{game.GameTime / 60:D2}:{game.GameTime % 60:D2}";
         }
