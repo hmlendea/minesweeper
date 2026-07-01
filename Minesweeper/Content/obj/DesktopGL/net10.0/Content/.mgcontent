@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/Fonts/FrameCounterFont.spritefont</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/Fonts/DefaultFont.spritefont</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/Fonts/InfoBarFont.spritefont</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/Fonts/MenuFont.spritefont</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/Fonts/ToolTipFont.spritefont</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/ScreenManager/FillImage.png</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/ScreenManager/missing-texture.png</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/SplashScreen/Logo.png</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/Tiles/mine.png</File>
+    <File>/home/horatiu/Proiecte/xna/minesweeper/Minesweeper/Content/Tiles/flag.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

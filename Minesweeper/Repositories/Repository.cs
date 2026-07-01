@@ -1,130 +1,66 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Minesweeper.Models;
 
 namespace Minesweeper.Repositories
 {
-    /// <summary>
-    /// Repository.
-    /// </summary>
-    public class Repository<T> where T : EntityBase
+    public class Repository<T> where T : ModelBase
     {
-        /// <summary>
-        /// Gets or sets the entities.
-        /// </summary>
-        /// <value>The entities.</value>
-        protected List<T> Entities { get; set; }
+        protected List<T> Entities { get; private set; }
 
-        /// <summary>
-        /// Gets the size.
-        /// </summary>
-        /// <value>The size.</value>
-        public int Size
-        {
-            get { return Entities.Count; }
-        }
+        public Repository() => Entities = new List<T>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Minesweeper.Repositories.Repository`1"/> class.
-        /// </summary>
-        public Repository()
+        public void Add(T entity)
         {
-            Entities = new List<T>();
-        }
-
-        /// <summary>
-        /// Add the specified entity.
-        /// </summary>
-        /// <param name="entity">Entity.</param>
-        public virtual void Add(T entity)
-        {
-            if (Entities.Contains(entity))
-                throw new RepositoryException("The specified entity already exists");
+            if (Contains(entity))
+            {
+                throw new RepositoryException(RepositoryException.DuplicateEntityError);
+            }
 
             Entities.Add(entity);
         }
 
-        /// <summary>
-        /// Get the specified id.
-        /// </summary>
-        /// <param name="id">Identifier.</param>
-        public virtual T Get(string id)
+        public T Get(string id)
         {
-            T entity = Entities.Find(E => E.Id == id);
+            T entity = Entities.Find(e => e.Id == id);
 
-            if (entity == null)
-                throw new RepositoryException("An entity with the specified identifier does not exist");
+            if (entity is null)
+            {
+                throw new RepositoryException(RepositoryException.EntityNotFoundError);
+            }
 
             return entity;
         }
 
-        /// <summary>
-        /// Gets all.
-        /// </summary>
-        /// <returns>The all.</returns>
-        public virtual List<T> GetAll()
-        {
-            return Entities;
-        }
+        public IEnumerable<T> GetAll() => Entities;
 
-        /// <summary>
-        /// Update the specified entity.
-        /// </summary>
-        /// <param name="entity">Entity.</param>
-        public virtual void Update(T entity)
-        {
-            T oldEntity = Get(entity.Id);
-            oldEntity = entity; // TODO Real update - currently it is being done by the service
-        }
-
-        /// <summary>
-        /// Remove the specified entity.
-        /// </summary>
-        /// <param name="entity">Entity.</param>
-        public virtual void Remove(T entity)
+        public void Update(T entity)
         {
             if (!Contains(entity))
-                throw new RepositoryException("The specified entity does not exist");
+            {
+                throw new RepositoryException(RepositoryException.EntityNotFoundError);
+            }
 
-            Entities.Remove(entity);
+            int index = Entities.FindIndex(e => e.Id == entity.Id);
+            Entities[index] = entity;
         }
 
-        /// <summary>
-        /// Remove the specified id.
-        /// </summary>
-        /// <param name="id">Identifier.</param>
-        public virtual void Remove(string id)
+        public void Remove(T entity) => Remove(entity.Id);
+
+        public void Remove(string id)
         {
             if (!Contains(id))
-                throw new RepositoryException("An entity with the specified identifier does not exist");
+            {
+                throw new RepositoryException(RepositoryException.EntityNotFoundError);
+            }
 
-            Entities.RemoveAll(T => T.Id == id);
+            Entities.RemoveAll(e => e.Id == id);
         }
 
-        /// <summary>
-        /// Clear this instance.
-        /// </summary>
-        public virtual void Clear()
-        {
-            Entities.Clear();
-        }
+        public void Clear() => Entities.Clear();
 
-        /// <summary>
-        /// Contains the specified entity.
-        /// </summary>
-        /// <param name="entity">Entity.</param>
-        public virtual bool Contains(T entity)
-        {
-            return Entities.Find(E => E.Equals(entity)) != null;
-        }
+        public bool Contains(T entity) => Contains(entity.Id);
 
-        /// <summary>
-        /// Contains the specified id.
-        /// </summary>
-        /// <param name="id">Identifier.</param>
-        public virtual bool Contains(string id)
-        {
-            return Entities.Find(E => E.Id == id) != null;
-        }
+        public bool Contains(string id) => Entities.Exists(e => e.Id == id);
     }
 }

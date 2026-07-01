@@ -1,18 +1,34 @@
-﻿using Gtk;
-using Minesweeper.Views;
+using System;
+using System.IO;
+
+using Minesweeper.Settings;
 
 namespace Minesweeper
 {
-    class MainClass
+    static class Program
     {
-        public static void Main(string[] args)
+        public static GameWindow Game { get; private set; }
+
+        internal static void RunGame()
         {
-            Application.Init();
+            Game = new GameWindow();
+            Game.Run();
+            Game.Dispose();
+        }
 
-            GameWindow win = new GameWindow();
-            win.Show();
+        internal static void PrepareFiles()
+        {
+            if (!Directory.Exists(ApplicationPaths.UserDataDirectory))
+            {
+                Directory.CreateDirectory(ApplicationPaths.UserDataDirectory);
+            }
+        }
 
-            Application.Run();
+        [STAThread]
+        static void Main()
+        {
+            PrepareFiles();
+            RunGame();
         }
     }
 }
