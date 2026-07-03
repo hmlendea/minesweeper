@@ -94,8 +94,8 @@ namespace Minesweeper.GameLogic.GameManagers
 
         public void ClearTile(int x, int y)
         {
-            int[] dx = { -1, -1, -1, 0, 1, 1, 1, 0 };
-            int[] dy = { -1, 0, 1, 1, 1, 0, -1, -1 };
+            int[] dx = [-1, -1, -1, 0, 1, 1, 1, 0];
+            int[] dy = [-1, 0, 1, 1, 1, 0, -1, -1];
 
             Tile tile = tileRepository.Get(x, y);
 
@@ -205,8 +205,8 @@ namespace Minesweeper.GameLogic.GameManagers
 
         void GenerateDangerLevels()
         {
-            int[] dx = { -1, -1, -1, 0, 1, 1, 1, 0 };
-            int[] dy = { -1, 0, 1, 1, 1, 0, -1, -1 };
+            int[] dx = [-1, -1, -1, 0, 1, 1, 1, 0];
+            int[] dy = [-1, 0, 1, 1, 1, 0, -1, -1];
 
             for (int x = 0; x < TableSize; x++)
             {
