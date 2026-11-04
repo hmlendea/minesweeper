@@ -13,6 +13,8 @@ The objective is to carefully clear all the mines on a square board, without det
 
 - [Capabilities](#-capabilities)
 - [Usage](#-usage)
+  - [Keyboard Shortcuts](#keyboard-shortcuts)
+  - [Mouse Controls](#mouse-controls)
 - [System Requirements](#-system-requirements)
 - [Installation](#-installation)
   - [Manual Installation](#manual-installation)
@@ -29,6 +31,10 @@ The objective is to carefully clear all the mines on a square board, without det
 - [Code of Conduct](#-code-of-conduct)
 - [Security](#-security)
 - [Architecture](#-architecture)
+- [GitHub Actions](#-github-actions)
+- [Project Structure](#-project-structure)
+  - [Projects and Packages](#projects-and-packages)
+  - [Directories](#directories)
 
 ## ✨ Capabilities
 
@@ -39,6 +45,22 @@ The objective is to carefully clear all the mines on a square board, without det
 ## 🚀 Usage
 
 Launch the Minesweeper executable to start a new puzzle game. Use the mouse to reveal tiles or place flags to mark suspected mine locations.
+
+### Keyboard Shortcuts
+
+| Shortcut | Action | Context |
+|----------|--------|---------|
+| `N` / `R` | New game / Restart | Gameplay screen |
+| `Escape` | Open menu / Return to title | Gameplay, Game Over, Victory screens |
+| `Enter` / `Space` | Confirm / Continue | Game Over, Victory, Splash screens |
+
+### Mouse Controls
+
+| Action | Button | Context |
+|--------|--------|---------|
+| Reveal tile | Left click | Gameplay screen |
+| Place/remove flag | Right click | Gameplay screen |
+| Navigate menus | Left click | All screens |
 
 ## 🖥️ System Requirements
 
@@ -137,3 +159,39 @@ See the [Security Policy](./SECURITY.md) for supported versions, vulnerability r
 ## 🏗️ Architecture
 
 See the [Architecture Document](./ARCHITECTURE.md) for system context, architectural style, runtime flow, components, data architecture, and design constraints.
+
+## ⚙️ GitHub Actions
+
+| Workflow | Purpose | What it does |
+|----------|---------|--------------|
+| [ dotnet.yml ](https://github.com/hmlendea/minesweeper/blob/master/.github/workflows/dotnet.yml) | Continuous integration | Builds the solution, runs tests on every push and pull request to master |
+
+## 🗂️ Project Structure
+
+### Projects and Packages
+
+| Project | Type | Purpose |
+|---------|------|---------|
+| `Minesweeper/` | Application | Main Minesweeper desktop game |
+| `Minesweeper.UnitTests/` | Unit Tests | Unit tests for game logic |
+
+### Directories
+
+| Directory | Purpose |
+|-----------|---------|
+| `Minesweeper/GameLogic/` | Game logic, managers, and repositories |
+| `Minesweeper/Gui/` | UI screens, controls, and helpers |
+| `Minesweeper/Content/` | MonoGame content (fonts, textures, audio) |
+| `Minesweeper/Settings/` | Configuration and settings management |
+| `Minesweeper/Resources/` | Embedded resources |
+
+## 💝 Project Engagement
+
+Discovered a problem or have a suggestion? [Open an issue](https://github.com/hmlendea/minesweeper/issues)!
+
+If you find this project useful, consider starring ⭐️ it on GitHub!
+
+## 📄 License
+
+This project is being distributed under the `GNU General Public License v3.0` or later.
+See [LICENSE](./LICENSE) for additional information.
