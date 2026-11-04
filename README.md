@@ -25,6 +25,9 @@ The objective is to carefully clear all the mines on a square board, without det
   - [Setup](#setup)
   - [Build](#build)
   - [Run](#run)
+- [Contributing](#-contributing)
+- [Code of Conduct](#-code-of-conduct)
+- [Security](#-security)
 
 ## ✨ Capabilities
 
@@ -125,3 +128,7 @@ For detailed contribution guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 ## 📜 Code of Conduct
 
 See the [Code of Conduct](./CODE_OF_CONDUCT.md) for the standards of conduct expected in all project spaces.
+
+## 🔒 Security
+
+See the [Security Policy](./SECURITY.md) for supported versions, vulnerability reporting, and disclosure practices.
