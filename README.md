@@ -28,6 +28,7 @@ The objective is to carefully clear all the mines on a square board, without det
 - [Contributing](#-contributing)
 - [Code of Conduct](#-code-of-conduct)
 - [Security](#-security)
+- [Architecture](#-architecture)
 
 ## ✨ Capabilities
 
@@ -132,3 +133,7 @@ See the [Code of Conduct](./CODE_OF_CONDUCT.md) for the standards of conduct exp
 ## 🔒 Security
 
 See the [Security Policy](./SECURITY.md) for supported versions, vulnerability reporting, and disclosure practices.
+
+## 🏗️ Architecture
+
+See the [Architecture Document](./ARCHITECTURE.md) for system context, architectural style, runtime flow, components, data architecture, and design constraints.
