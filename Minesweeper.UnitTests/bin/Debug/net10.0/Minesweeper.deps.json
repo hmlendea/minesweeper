@@ -1,0 +1,300 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Minesweeper/1.0.0": {
+        "dependencies": {
+          "MonoGame.Framework.DesktopGL": "3.8.4",
+          "NuciDAL": "3.1.0",
+          "NuciXNA.DataAccess": "4.0.3",
+          "NuciXNA.Graphics": "2.2.3",
+          "NuciXNA.Gui": "3.2.1",
+          "NuciXNA.Input": "2.0.4",
+          "NuciXNA.Primitives": "2.1.6"
+        },
+        "runtime": {
+          "Minesweeper.dll": {}
+        }
+      },
+      "MonoGame.Framework.DesktopGL/3.8.4": {
+        "dependencies": {
+          "MonoGame.Library.OpenAL": "1.23.1.10",
+          "MonoGame.Library.SDL": "2.32.2.1",
+          "NVorbis": "0.10.4"
+        },
+        "runtime": {
+          "lib/net8.0/MonoGame.Framework.dll": {
+            "assemblyVersion": "3.8.4.0",
+            "fileVersion": "3.8.4.0"
+          }
+        }
+      },
+      "MonoGame.Library.OpenAL/1.23.1.10": {
+        "runtimeTargets": {
+          "runtimes/android-arm/native/libopenal.so": {
+            "rid": "android-arm",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/android-arm64/native/libopenal.so": {
+            "rid": "android-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/android-x64/native/libopenal.so": {
+            "rid": "android-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/android-x86/native/libopenal.so": {
+            "rid": "android-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/ios-arm64/native/libopenal.dylib": {
+            "rid": "ios-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/iossimulator-arm64/native/libopenal.dylib": {
+            "rid": "iossimulator-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/iossimulator-x64/native/libopenal.dylib": {
+            "rid": "iossimulator-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libopenal.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx/native/libopenal.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/openal.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "MonoGame.Library.SDL/2.32.2.1": {
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libSDL2-2.0.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx/native/libSDL2-2.0.0.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/SDL2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "NuciDAL/3.1.0": {
+        "dependencies": {
+          "NuciExtensions": "5.3.0"
+        },
+        "runtime": {
+          "lib/net10.0/NuciDAL.dll": {
+            "assemblyVersion": "3.1.0.0",
+            "fileVersion": "3.1.0.0"
+          }
+        }
+      },
+      "NuciExtensions/5.3.0": {
+        "runtime": {
+          "lib/net9.0/NuciExtensions.dll": {
+            "assemblyVersion": "5.3.0.0",
+            "fileVersion": "5.3.0.0"
+          }
+        }
+      },
+      "NuciXNA.DataAccess/4.0.3": {
+        "dependencies": {
+          "MonoGame.Framework.DesktopGL": "3.8.4",
+          "NuciXNA.Primitives": "2.1.6",
+          "SixLabors.ImageSharp": "3.1.12"
+        },
+        "runtime": {
+          "lib/net10.0/NuciXNA.DataAccess.dll": {
+            "assemblyVersion": "4.0.3.0",
+            "fileVersion": "4.0.3.0"
+          }
+        }
+      },
+      "NuciXNA.Graphics/2.2.3": {
+        "dependencies": {
+          "MonoGame.Framework.DesktopGL": "3.8.4",
+          "NuciXNA.DataAccess": "4.0.3",
+          "NuciXNA.Primitives": "2.1.6"
+        },
+        "runtime": {
+          "lib/net10.0/NuciXNA.Graphics.dll": {
+            "assemblyVersion": "2.2.3.0",
+            "fileVersion": "2.2.3.0"
+          }
+        }
+      },
+      "NuciXNA.Gui/3.2.1": {
+        "dependencies": {
+          "MonoGame.Framework.DesktopGL": "3.8.4",
+          "NuciXNA.Graphics": "2.2.3",
+          "NuciXNA.Input": "2.0.4",
+          "NuciXNA.Primitives": "2.1.6"
+        },
+        "runtime": {
+          "lib/net10.0/NuciXNA.Gui.dll": {
+            "assemblyVersion": "3.2.1.0",
+            "fileVersion": "3.2.1.0"
+          }
+        }
+      },
+      "NuciXNA.Input/2.0.4": {
+        "dependencies": {
+          "MonoGame.Framework.DesktopGL": "3.8.4",
+          "NuciXNA.Primitives": "2.1.6"
+        },
+        "runtime": {
+          "lib/net10.0/NuciXNA.Input.dll": {
+            "assemblyVersion": "2.0.4.0",
+            "fileVersion": "2.0.4.0"
+          }
+        }
+      },
+      "NuciXNA.Primitives/2.1.6": {
+        "dependencies": {
+          "MonoGame.Framework.DesktopGL": "3.8.4"
+        },
+        "runtime": {
+          "lib/net10.0/NuciXNA.Primitives.dll": {
+            "assemblyVersion": "2.1.6.0",
+            "fileVersion": "2.1.6.0"
+          }
+        }
+      },
+      "NVorbis/0.10.4": {
+        "runtime": {
+          "lib/netstandard2.0/NVorbis.dll": {
+            "assemblyVersion": "0.10.4.0",
+            "fileVersion": "0.10.4.0"
+          }
+        }
+      },
+      "SixLabors.ImageSharp/3.1.12": {
+        "runtime": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.1.12.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Minesweeper/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MonoGame.Framework.DesktopGL/3.8.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2WR/vPNPcmQ9h4EhMkfpUfMW0Krm6pX0ElkZwSRI1IUecPuzLeXt0i9NRwGxZBUdcNdNxACCmswrxSf4B95Obg==",
+      "path": "monogame.framework.desktopgl/3.8.4",
+      "hashPath": "monogame.framework.desktopgl.3.8.4.nupkg.sha512"
+    },
+    "MonoGame.Library.OpenAL/1.23.1.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4/F4FFyt7OYhtEmgi/Qmv01eC6GfQ9dkIPsymgkwJ/tV7PewmWrHg/LvTKjd6R+5j/tlO8JkjsEb0Aje6bxfxw==",
+      "path": "monogame.library.openal/1.23.1.10",
+      "hashPath": "monogame.library.openal.1.23.1.10.nupkg.sha512"
+    },
+    "MonoGame.Library.SDL/2.32.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-T4E2ppGlSTC2L9US1rxtdg3qTbarRzNId31xZoumUW9cf9Nq8nRQPMu9GzvZGrhfSySf0+UWPEj1rlicps+P/w==",
+      "path": "monogame.library.sdl/2.32.2.1",
+      "hashPath": "monogame.library.sdl.2.32.2.1.nupkg.sha512"
+    },
+    "NuciDAL/3.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+jSbf/zZOcEo6JszTMCKFe6iFPVkbbnNTvD4mMNTGVA210fg8N9GUG4nc6RBFN/alyecTkDGf9GKHsh2s2QzaQ==",
+      "path": "nucidal/3.1.0",
+      "hashPath": "nucidal.3.1.0.nupkg.sha512"
+    },
+    "NuciExtensions/5.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qOfEwXsgPCoWGJpzkTiefOfBVOSgbcs1RVmbOVW4tGQqN8n7z2gBM+QVlnGcia8i73PVKo2eP8SylNVC0mJtlg==",
+      "path": "nuciextensions/5.3.0",
+      "hashPath": "nuciextensions.5.3.0.nupkg.sha512"
+    },
+    "NuciXNA.DataAccess/4.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-k8//AijAkXiJbQtjfIC64euprxTMq90UFSJ48mE8kDdPK93dihwr9Sp7cjIHWWvu6T+93ydv4X12jb9gkg3UUw==",
+      "path": "nucixna.dataaccess/4.0.3",
+      "hashPath": "nucixna.dataaccess.4.0.3.nupkg.sha512"
+    },
+    "NuciXNA.Graphics/2.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lRUk4yBBgZ7zv9N19axLV6H0T7p0LMyL7yrx/fbu+5qkBGAmI2o3ahLLNCDCvg13r3yX4E9ngSau3nckmwdB3g==",
+      "path": "nucixna.graphics/2.2.3",
+      "hashPath": "nucixna.graphics.2.2.3.nupkg.sha512"
+    },
+    "NuciXNA.Gui/3.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ofNpV7zwet/P7CbznwW/RNP4V/dPKbWVmqYm2gcnLUxaPlnW/49swbSmr7+j/LfrB1OmHcnTE+JSgelXP8dyNw==",
+      "path": "nucixna.gui/3.2.1",
+      "hashPath": "nucixna.gui.3.2.1.nupkg.sha512"
+    },
+    "NuciXNA.Input/2.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SRRQWZui33BhedDpsBUsgrLZsrvLwdySg6DPqfCI7v440MsoNgcz29kpQJ2kJeAJCXAbVqVxfe3qfoVFHh4SSQ==",
+      "path": "nucixna.input/2.0.4",
+      "hashPath": "nucixna.input.2.0.4.nupkg.sha512"
+    },
+    "NuciXNA.Primitives/2.1.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-N+MAvbnTjagBbg2EdHAvl0IUYZcQ9BkpA+wu+vvTCbDX4CtB68zpYhhZP+Q0H3gMWcW0ycPqo49LZD+Q0eIHEQ==",
+      "path": "nucixna.primitives/2.1.6",
+      "hashPath": "nucixna.primitives.2.1.6.nupkg.sha512"
+    },
+    "NVorbis/0.10.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WYnil3DhQHzjCY0dM9I2B3r1vWip90AOuQd25KE4NrjPQBg0tBJFluRLm5YPnO5ZLDmwrfosY8jCQGQRmWI/Pg==",
+      "path": "nvorbis/0.10.4",
+      "hashPath": "nvorbis.0.10.4.nupkg.sha512"
+    },
+    "SixLabors.ImageSharp/3.1.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iAg6zifihXEFS/t7fiHhZBGAdCp3FavsF4i2ZIDp0JfeYeDVzvmlbY1CNhhIKimaIzrzSi5M/NBFcWvZT2rB/A==",
+      "path": "sixlabors.imagesharp/3.1.12",
+      "hashPath": "sixlabors.imagesharp.3.1.12.nupkg.sha512"
+    }
+  }
+}
