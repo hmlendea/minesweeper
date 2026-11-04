@@ -6,10 +6,6 @@
 
 Modern and open-source reimplementation of the classic puzzle game Minesweeper.
 
-This is a very similar game to the original game with the same name. It was created to fill the gap after the original's removal from modern Windows releases.
-
-The objective is to carefully clear all the mines on a square board, without detonating them.
-
 ## 📑 Table of Contents
 
 - [Capabilities](#-capabilities)
@@ -22,12 +18,12 @@ The objective is to carefully clear all the mines on a square board, without det
   - [Installation from Source](#installation-from-source)
 - [Compatibility](#-compatibility)
 - [Privacy and Data](#-privacy-and-data)
-  - [Data Locations](#data-locations)
 - [Development](#-development)
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [Build](#build)
   - [Run](#run)
+  - [Test](#test)
 - [Contributing](#-contributing)
 - [Code of Conduct](#-code-of-conduct)
 - [Security](#-security)
@@ -36,6 +32,9 @@ The objective is to carefully clear all the mines on a square board, without det
 - [Project Structure](#-project-structure)
   - [Projects and Packages](#projects-and-packages)
   - [Directories](#directories)
+- [Documentation](#-documentation)
+- [Project Engagement](#-project-engagement)
+- [License](#-license)
 
 ## ✨ Capabilities
 
@@ -99,19 +98,6 @@ Minesweeper is a self-contained desktop application that does not collect, proce
 
 For the detailed description of how the application handles privacy and personal data, see the [Privacy Statement](./PRIVACY.md).
 
-The application only persists local graphics and audio preferences to a local configuration file.
-
-| Data | Purpose | Storage | Retention | Optional |
-|------|---------|---------|-----------|----------|
-| User Preferences | Saving graphics and audio settings | Local XML file | Until deleted | Yes |
-
-### Data Locations
-
-| Platform or Scope | Location | Contents |
-|-------------------|----------|----------|
-| Linux / macOS | `~/.local/share/Minesweeper/Settings.xml` | Graphics and audio configuration |
-| Windows | `%LocalAppData%\Minesweeper\Settings.xml` | Graphics and audio configuration |
-
 ## 🛠️ Development
 
 ### Requirements
@@ -137,6 +123,12 @@ dotnet build
 dotnet run --project Minesweeper
 ```
 
+### Test
+
+```bash
+dotnet test --no-build --verbosity normal
+```
+
 ## 🤝 Contributing
 
 You are welcome to submit any suggestion, feedback, or modification to this project.
@@ -159,13 +151,13 @@ See the [Security Policy](./SECURITY.md) for supported versions, vulnerability r
 
 ## 🏗️ Architecture
 
-See the [Architecture Document](./ARCHITECTURE.md) for system context, architectural style, runtime flow, components, data architecture, and design constraints.
+See the [Architecture Documentation](./ARCHITECTURE.md) for system context, architectural style, runtime flow, components, data architecture, and design constraints.
 
 ## ⚙️ GitHub Actions
 
 | Workflow | Purpose | What it does |
 |----------|---------|--------------|
-| [ dotnet.yml ](https://github.com/hmlendea/minesweeper/blob/master/.github/workflows/dotnet.yml) | Continuous integration | Builds the solution, runs tests on every push and pull request to master |
+| [dotnet.yml](https://github.com/hmlendea/minesweeper/blob/master/.github/workflows/dotnet.yml) | Continuous integration | Builds the solution, runs tests on every push and pull request to master |
 
 ## 🗂️ Project Structure
 
@@ -185,6 +177,15 @@ See the [Architecture Document](./ARCHITECTURE.md) for system context, architect
 | `Minesweeper/Content/` | MonoGame content (fonts, textures, audio) |
 | `Minesweeper/Settings/` | Configuration and settings management |
 | `Minesweeper/Resources/` | Embedded resources |
+
+## 📚 Documentation
+
+- [Architecture Documentation](./ARCHITECTURE.md)
+- [Contributing Guidelines](./CONTRIBUTING.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Security Policy](./SECURITY.md)
+- [Privacy Statement](./PRIVACY.md)
+- [Documentation Index](./docs/INDEX.md)
 
 ## 💝 Project Engagement
 
