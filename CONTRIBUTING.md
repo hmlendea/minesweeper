@@ -6,6 +6,7 @@ This document covers the guidelines and processes for contributing to this proje
 
 - [How to Contribute](#how-to-contribute)
 - [Code of Conduct](#code-of-conduct)
+- [Security](#security)
 - [License](#license)
 - [Getting Assistance](#getting-assistance)
 
@@ -76,11 +77,15 @@ dotnet test --no-build --verbosity normal
 - Follow the documentation style guide.
 - Preview changes locally if possible.
 
-## � Code of Conduct
+## 📋 Code of Conduct
 
 This project follows the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-## �📄 License
+## 🔒 Security
+
+This project follows the [Security Policy](./SECURITY.md) for vulnerability reporting and disclosure practices.
+
+## 📄 License
 
 By contributing, you agree that your contributions will be licensed under the GNU General Public License v3.0.
 
